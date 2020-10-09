@@ -1,0 +1,28 @@
+import ch.so.agi.gretl.api.TransferSet
+import ch.so.agi.gretl.tasks.*
+import java.nio.file.Paths
+
+apply plugin: 'ch.so.agi.gretl'
+
+buildscript {
+    repositories {
+        maven { url "https://dl.bintray.com/sogis/iox-wkf/" } // TODO: REMOVE!!  
+        maven { url "http://jars.interlis.ch" }
+        maven { url "http://jars.umleditor.org" }
+        maven { url "https://repo.osgeo.org/repository/release/" }
+        mavenCentral()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath group: 'ch.so.agi', name: 'gretl',  version: '2.0.276'
+    }
+}
+
+defaultTasks 'transferData'
+
+task transferData(type: SqlExecutor) {
+    database = [dbUriPub, dbUserPub, dbPwdPub]
+    sqlParameters = [gem_bfs:'2601']
+    sqlFiles = ["transfer_data.sql"]
+}
