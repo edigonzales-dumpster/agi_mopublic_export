@@ -37,3 +37,6 @@ export ORG_GRADLE_PROJECT_dbUriPub=jdbc:postgresql://localhost:54322/pub
 export ORG_GRADLE_PROJECT_dbUserPub=admin
 export ORG_GRADLE_PROJECT_dbPwdPub=admin
 ```
+
+
+./start-gretl.sh --docker-image sogis/gretl-runtime:latest --docker-network gretljobs-agi_mopublic_pub_export_default --job-directory $PWD agi_mopublic_pub_export tasks --all
