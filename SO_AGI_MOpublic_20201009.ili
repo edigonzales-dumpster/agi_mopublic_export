@@ -59,7 +59,7 @@ VERSION "2020-10-09"  =
       Geometrie : MANDATORY GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
     END Bodenbedeckung;
 
-    CLASS Bodenbedeckung_proj =
+    CLASS BodenbedeckungProj =
       /** Bodenbedeckungsart (Text-Repräsentation)
        */
       Art_txt : MANDATORY TEXT*100;
@@ -78,9 +78,9 @@ VERSION "2020-10-09"  =
       /** Geometrie
        */
       Geometrie : MANDATORY GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
-    END Bodenbedeckung_proj;
+    END BodenbedeckungProj;
 
-    CLASS Einzelobjekt_Flaeche =
+    CLASS EinzelobjektFlaeche =
       /** Einzelobjektart (Text-Repräsentation)
        */
       Art_txt : MANDATORY TEXT*100;
@@ -99,9 +99,9 @@ VERSION "2020-10-09"  =
       /** Geometrie
        */
       Geometrie : MANDATORY GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
-    END Einzelobjekt_Flaeche;
+    END EinzelobjektFlaeche;
 
-    CLASS Einzelobjekt_Linie =
+    CLASS EinzelobjektLinie =
       /** Einzelobjektart (Text-Repräsentation)
        */
       Art_txt : MANDATORY TEXT*100;
@@ -117,7 +117,7 @@ VERSION "2020-10-09"  =
       /** Geometrie
        */
       Geometrie : MANDATORY GeometryCHLV95_V1.Line;
-    END Einzelobjekt_Linie;
+    END EinzelobjektLinie;
 
     CLASS FlurnameBase (ABSTRACT) =
       /** Flurname
@@ -197,7 +197,7 @@ VERSION "2020-10-09"  =
       Nachfuehrung : INTERLIS.XMLDate;
     END Gemeindegrenze;
 
-    CLASS Gemeindegrenze_proj =
+    CLASS GemeindegrenzeProj =
       /** Name der Gemeinde
        */
       Gemeindename : MANDATORY TEXT*100;
@@ -213,40 +213,7 @@ VERSION "2020-10-09"  =
       /** Datum der Nachführung durch Geometer
        */
       Nachfuehrung : INTERLIS.XMLDate;
-    END Gemeindegrenze_proj;
-
-    CLASS Grundstueck_projBase (ABSTRACT) =
-      /** Nummerierungsbereichidentifikator
-       */
-      NBIdent : MANDATORY TEXT*12;
-      /** Grundbuchnummer
-       */
-      Nummer : MANDATORY TEXT*15;
-      /** Grundstücksart (Text-Repräsentation)
-       */
-      Art_txt : MANDATORY TEXT*100;
-      /** Fläche des Grundstückes in m2
-       */
-      Flaechenmass : MANDATORY 0 .. 9999999999;
-      /** Eidgenössischer Grundstücksidentifikator
-       */
-      EGRID : TEXT*14;
-      /** Gemeindenummer (BfS-Nummer) der Gemeinde in welcher das Objekt liegt.
-       */
-      BFS_Nr : MANDATORY CHAdminCodes_V1.CHMunicipalityCode;
-      /** Importdatum
-       */
-      Importdatum : MANDATORY INTERLIS.XMLDateTime;
-      /** Datum der Nachführung durch Geometer
-       */
-      Nachfuehrung : INTERLIS.XMLDate;
-      /** Name des Grundbuchs (= Grundbuchkreis)
-       */
-      Grundbuch : MANDATORY TEXT*255;
-      /** Name der Gemeinde
-       */
-      Gemeinde : MANDATORY TEXT*255;
-    END Grundstueck_projBase;
+    END GemeindegrenzeProj;
 
     CLASS GrundstueckBase (ABSTRACT) =
       /** Nummerierungsbereichidentifikator
@@ -280,6 +247,39 @@ VERSION "2020-10-09"  =
        */
       Gemeinde : MANDATORY TEXT*255;
     END GrundstueckBase;
+
+    CLASS GrundstueckProjBase (ABSTRACT) =
+      /** Nummerierungsbereichidentifikator
+       */
+      NBIdent : MANDATORY TEXT*12;
+      /** Grundbuchnummer
+       */
+      Nummer : MANDATORY TEXT*15;
+      /** Grundstücksart (Text-Repräsentation)
+       */
+      Art_txt : MANDATORY TEXT*100;
+      /** Fläche des Grundstückes in m2
+       */
+      Flaechenmass : MANDATORY 0 .. 9999999999;
+      /** Eidgenössischer Grundstücksidentifikator
+       */
+      EGRID : TEXT*14;
+      /** Gemeindenummer (BfS-Nummer) der Gemeinde in welcher das Objekt liegt.
+       */
+      BFS_Nr : MANDATORY CHAdminCodes_V1.CHMunicipalityCode;
+      /** Importdatum
+       */
+      Importdatum : MANDATORY INTERLIS.XMLDateTime;
+      /** Datum der Nachführung durch Geometer
+       */
+      Nachfuehrung : INTERLIS.XMLDate;
+      /** Name des Grundbuchs (= Grundbuchkreis)
+       */
+      Grundbuch : MANDATORY TEXT*255;
+      /** Name der Gemeinde
+       */
+      Gemeinde : MANDATORY TEXT*255;
+    END GrundstueckProjBase;
 
     CLASS OrtsnameBase (ABSTRACT) =
       /** Ortsname
@@ -338,7 +338,7 @@ VERSION "2020-10-09"  =
       Nachfuehrung : INTERLIS.XMLDate;
     END Strassenachse;
 
-    CLASS Einzelobjekt_Punkt =
+    CLASS EinzelobjektPunkt =
       /** Einzelobjektart (Txt-Repräsentation)
        */
       Art_txt : MANDATORY TEXT*100;
@@ -357,7 +357,7 @@ VERSION "2020-10-09"  =
       /** Geometrie
        */
       Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
-    END Einzelobjekt_Punkt;
+    END EinzelobjektPunkt;
 
     CLASS FixpunktBase =
       /** Fixpunkttyp (Text-Repräsentation)
@@ -513,13 +513,6 @@ VERSION "2020-10-09"  =
       Geometrie : MANDATORY GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
     END Grundstueck;
 
-    CLASS Grundstueck_proj
-    EXTENDS Grundstueck_projBase =
-      /** Geometrie
-       */
-      Geometrie : MANDATORY GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
-    END Grundstueck_proj;
-
     CLASS GrundstueckPos
     EXTENDS GrundstueckBase =
       /** Positionierungspunkt für Beschriftung
@@ -536,8 +529,15 @@ VERSION "2020-10-09"  =
       VAli : MANDATORY INTERLIS.VALIGNMENT;
     END GrundstueckPos;
 
-    CLASS GrundstueckPos_proj
-    EXTENDS Grundstueck_projBase =
+    CLASS GrundstueckProj
+    EXTENDS GrundstueckProjBase =
+      /** Geometrie
+       */
+      Geometrie : MANDATORY GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
+    END GrundstueckProj;
+
+    CLASS GrundstueckProjPos
+    EXTENDS GrundstueckProjBase =
       /** Positionierungspunkt für Beschriftung
        */
       Pos : MANDATORY GeometryCHLV95_V1.Coord2;
@@ -550,7 +550,7 @@ VERSION "2020-10-09"  =
       /** VAlignment
        */
       VAli : MANDATORY INTERLIS.VALIGNMENT;
-    END GrundstueckPos_proj;
+    END GrundstueckProjPos;
 
     CLASS HoheitsgrenzpunktBase (ABSTRACT) =
       /** Nummer des Hoheitsgrenzpunktes
@@ -579,7 +579,7 @@ VERSION "2020-10-09"  =
       Nachfuehrung : INTERLIS.XMLDate;
     END HoheitsgrenzpunktBase;
 
-    CLASS Objektname_Pos =
+    CLASS ObjektnamePos =
       /** Name des Objektes
        */
       Objektname : MANDATORY TEXT*100;
@@ -618,7 +618,7 @@ VERSION "2020-10-09"  =
       /** Status der Geometrie: projektiert/realisiert
        */
       Status : MANDATORY TEXT*20;
-    END Objektname_Pos;
+    END ObjektnamePos;
 
     CLASS Ortsname
     EXTENDS OrtsnameBase =
@@ -643,7 +643,7 @@ VERSION "2020-10-09"  =
       VAli : MANDATORY INTERLIS.VALIGNMENT;
     END OrtsnamePos;
 
-    CLASS Strassenname_Pos =
+    CLASS StrassennamePos =
       /** Strassenname
        */
       Strassenname : MANDATORY TEXT*100;
@@ -668,7 +668,7 @@ VERSION "2020-10-09"  =
       /** Datum der Nachführung durch Geometer
        */
       Nachfuehrung : INTERLIS.XMLDate;
-    END Strassenname_Pos;
+    END StrassennamePos;
 
     CLASS Fixpunkt
     EXTENDS FixpunktBase =
