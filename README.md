@@ -36,6 +36,18 @@ export ORG_GRADLE_PROJECT_dbPwdEdit=admin
 export ORG_GRADLE_PROJECT_dbUriPub=jdbc:postgresql://localhost:54322/pub
 export ORG_GRADLE_PROJECT_dbUserPub=admin
 export ORG_GRADLE_PROJECT_dbPwdPub=admin
+
+export ORG_GRADLE_PROJECT_dbUriEdit=jdbc:postgresql://localhost:54321/edit
+export ORG_GRADLE_PROJECT_dbUserEdit=gretl
+export ORG_GRADLE_PROJECT_dbPwdEdit=gretl
+export ORG_GRADLE_PROJECT_dbUriPub=jdbc:postgresql://localhost:54322/pub
+export ORG_GRADLE_PROJECT_dbUserPub=gretl
+export ORG_GRADLE_PROJECT_dbPwdPub=gretl
+
+
+export ORG_GRADLE_PROJECT_awsAccessKeyAgi=XXXXXXXXXXX
+export ORG_GRADLE_PROJECT_awsSecretAccessKeyAgi=XXXXXXXXXXX
+export ORG_GRADLE_PROJECT_gretlEnvironment=dev
 ```
 
 ./start-gretl.sh --docker-image sogis/gretl-runtime:latest --docker-network gretljobs-agi_mopublic_pub_export_default --job-directory $PWD agi_mopublic_pub_export tasks --all

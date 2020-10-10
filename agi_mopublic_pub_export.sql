@@ -497,7 +497,7 @@ COMMENT ON COLUMN agi_mopublic_pub_export.mopublic_objektnamepos.astatus IS 'Sta
 CREATE TABLE agi_mopublic_pub_export.mopublic_ortsname (
   T_Id bigint PRIMARY KEY DEFAULT nextval('agi_mopublic_pub_export.t_ili2db_seq')
   ,T_Ili_Tid uuid NULL DEFAULT uuid_generate_v4()
-  ,geometrie geometry(POINT,2056) NOT NULL
+  ,geometrie geometry(POLYGON,2056) NOT NULL
   ,ortsname varchar(40) NOT NULL
   ,bfs_nr integer NOT NULL
   ,importdatum timestamp NOT NULL
@@ -717,7 +717,7 @@ CREATE TABLE agi_mopublic_pub_export.T_ILI2DB_MODEL (
   ,modelName text NOT NULL
   ,content text NOT NULL
   ,importDate timestamp NOT NULL
-  ,PRIMARY KEY (iliversion,modelName)
+  ,PRIMARY KEY (modelName,iliversion)
 )
 ;
 CREATE TABLE agi_mopublic_pub_export.valignment (
@@ -729,7 +729,7 @@ CREATE TABLE agi_mopublic_pub_export.valignment (
   ,description varchar(1024) NULL
 )
 ;
-CREATE TABLE agi_mopublic_pub_export.mopublic_grenzpunkt_gueltigkeit (
+CREATE TABLE agi_mopublic_pub_export.halignment (
   itfCode integer PRIMARY KEY
   ,iliCode varchar(1024) NOT NULL
   ,seq integer NULL
@@ -747,7 +747,7 @@ CREATE TABLE agi_mopublic_pub_export.mopublic_objektnamepos_herkunft (
   ,description varchar(1024) NULL
 )
 ;
-CREATE TABLE agi_mopublic_pub_export.halignment (
+CREATE TABLE agi_mopublic_pub_export.mopublic_grenzpunkt_gueltigkeit (
   itfCode integer PRIMARY KEY
   ,iliCode varchar(1024) NOT NULL
   ,seq integer NULL
@@ -856,7 +856,7 @@ ALTER TABLE agi_mopublic_pub_export.mopublic_hoheitsgrenzpunktpos ADD CONSTRAINT
 ALTER TABLE agi_mopublic_pub_export.T_ILI2DB_BASKET ADD CONSTRAINT T_ILI2DB_BASKET_dataset_fkey FOREIGN KEY ( dataset ) REFERENCES agi_mopublic_pub_export.T_ILI2DB_DATASET DEFERRABLE INITIALLY DEFERRED;
 CREATE UNIQUE INDEX T_ILI2DB_DATASET_datasetName_key ON agi_mopublic_pub_export.T_ILI2DB_DATASET (datasetName)
 ;
-CREATE UNIQUE INDEX T_ILI2DB_MODEL_iliversion_modelName_key ON agi_mopublic_pub_export.T_ILI2DB_MODEL (iliversion,modelName)
+CREATE UNIQUE INDEX T_ILI2DB_MODEL_modelName_iliversion_key ON agi_mopublic_pub_export.T_ILI2DB_MODEL (modelName,iliversion)
 ;
 CREATE UNIQUE INDEX T_ILI2DB_ATTRNAME_ColOwner_SqlName_key ON agi_mopublic_pub_export.T_ILI2DB_ATTRNAME (ColOwner,SqlName)
 ;
@@ -1177,54 +1177,54 @@ INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TRAFO (iliname,tag,setting) VALUES 
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TRAFO (iliname,tag,setting) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckBase','ch.ehi.ili2db.inheritance','subClass');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TRAFO (iliname,tag,setting) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Gemeindegrenze','ch.ehi.ili2db.inheritance','newClass');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TRAFO (iliname,tag,setting) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.EinzelobjektFlaeche','ch.ehi.ili2db.inheritance','newClass');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GebaeudeadresseBase',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.FlurnamePos','SO_AGI_MOpublic_20201009.MOpublic.FlurnameBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProjPos','SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProjBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.HoheitsgrenzpunktBase',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Gebaeudeadresse','SO_AGI_MOpublic_20201009.MOpublic.GebaeudeadresseBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.FlurnameBase',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.OrtsnamePos','SO_AGI_MOpublic_20201009.MOpublic.OrtsnameBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Fixpunkt','SO_AGI_MOpublic_20201009.MOpublic.FixpunktBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckBase',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Strassenachse',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.StrassennamePos',NULL);
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.BodenbedeckungProj',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.FixpunktPos','SO_AGI_MOpublic_20201009.MOpublic.FixpunktBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.FixpunktBase',NULL);
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.ObjektnamePos',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GemeindegrenzeProj',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Flurname','SO_AGI_MOpublic_20201009.MOpublic.FlurnameBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.HoheitsgrenzpunktPos','SO_AGI_MOpublic_20201009.MOpublic.HoheitsgrenzpunktBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GebaeudeadressePos','SO_AGI_MOpublic_20201009.MOpublic.GebaeudeadresseBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.OrtsnameBase',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.EinzelobjektLinie',NULL);
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProjBase',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProj','SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProjBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Bodenbedeckung',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Flurname','SO_AGI_MOpublic_20201009.MOpublic.FlurnameBase');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckPos','SO_AGI_MOpublic_20201009.MOpublic.GrundstueckBase');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Hoheitsgrenzpunkt','SO_AGI_MOpublic_20201009.MOpublic.HoheitsgrenzpunktBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GebaeudeadressePos','SO_AGI_MOpublic_20201009.MOpublic.GebaeudeadresseBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Bodenbedeckung',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GemeindegrenzeProj',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Grundstueck','SO_AGI_MOpublic_20201009.MOpublic.GrundstueckBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Fixpunkt','SO_AGI_MOpublic_20201009.MOpublic.FixpunktBase');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.EinzelobjektFlaeche',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Gemeindegrenze',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.FixpunktBase',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.StrassennamePos',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.FixpunktPos','SO_AGI_MOpublic_20201009.MOpublic.FixpunktBase');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.EinzelobjektPunkt',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Gelaendename',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.EinzelobjektLinie',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Grenzpunkt',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckBase',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.FlurnameBase',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProjPos','SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProjBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GebaeudeadresseBase',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Gemeindegrenze',NULL);
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Rohrleitung',NULL);
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Ortsname','SO_AGI_MOpublic_20201009.MOpublic.OrtsnameBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.HoheitsgrenzpunktPos','SO_AGI_MOpublic_20201009.MOpublic.HoheitsgrenzpunktBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Grundstueck','SO_AGI_MOpublic_20201009.MOpublic.GrundstueckBase');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.OrtsnameBase',NULL);
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Grenzpunkt',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.FlurnamePos','SO_AGI_MOpublic_20201009.MOpublic.FlurnameBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.OrtsnamePos','SO_AGI_MOpublic_20201009.MOpublic.OrtsnameBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Strassenachse',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProj','SO_AGI_MOpublic_20201009.MOpublic.GrundstueckProjBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Gebaeudeadresse','SO_AGI_MOpublic_20201009.MOpublic.GebaeudeadresseBase');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.HoheitsgrenzpunktBase',NULL);
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_AGI_MOpublic_20201009.MOpublic.Gelaendename',NULL);
 INSERT INTO agi_mopublic_pub_export.valignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (0,'Top',0,'Top',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.valignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (1,'Cap',1,'Cap',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.valignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (2,'Half',2,'Half',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.valignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (3,'Base',3,'Base',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.valignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (4,'Bottom',4,'Bottom',FALSE,NULL);
-INSERT INTO agi_mopublic_pub_export.mopublic_grenzpunkt_gueltigkeit (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'projektiert',0,'projektiert',FALSE,NULL);
-INSERT INTO agi_mopublic_pub_export.mopublic_grenzpunkt_gueltigkeit (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'gueltig',1,'gueltig',FALSE,NULL);
+INSERT INTO agi_mopublic_pub_export.halignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (0,'Left',0,'Left',FALSE,NULL);
+INSERT INTO agi_mopublic_pub_export.halignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (1,'Center',1,'Center',FALSE,NULL);
+INSERT INTO agi_mopublic_pub_export.halignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (2,'Right',2,'Right',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.mopublic_objektnamepos_herkunft (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'EO_Punkt',0,'EO Punkt',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.mopublic_objektnamepos_herkunft (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'EO_Linie',1,'EO Linie',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.mopublic_objektnamepos_herkunft (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'EO_Flaeche',2,'EO Flaeche',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.mopublic_objektnamepos_herkunft (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'BB',3,'BB',FALSE,NULL);
-INSERT INTO agi_mopublic_pub_export.halignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (0,'Left',0,'Left',FALSE,NULL);
-INSERT INTO agi_mopublic_pub_export.halignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (1,'Center',1,'Center',FALSE,NULL);
-INSERT INTO agi_mopublic_pub_export.halignment (seq,iliCode,itfCode,dispName,inactive,description) VALUES (2,'Right',2,'Right',FALSE,NULL);
+INSERT INTO agi_mopublic_pub_export.mopublic_grenzpunkt_gueltigkeit (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'projektiert',0,'projektiert',FALSE,NULL);
+INSERT INTO agi_mopublic_pub_export.mopublic_grenzpunkt_gueltigkeit (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'gueltig',1,'gueltig',FALSE,NULL);
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_fixpunktpos',NULL,'pos','ch.ehi.ili2db.coordDimension','2');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_fixpunktpos',NULL,'pos','ch.ehi.ili2db.c1Max','2870000.000');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_fixpunktpos',NULL,'pos','ch.ehi.ili2db.c2Max','1310000.000');
@@ -1251,7 +1251,7 @@ INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,colu
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_ortsname',NULL,'geometrie','ch.ehi.ili2db.coordDimension','2');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_ortsname',NULL,'geometrie','ch.ehi.ili2db.c1Max','2870000.000');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_ortsname',NULL,'geometrie','ch.ehi.ili2db.c2Max','1310000.000');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_ortsname',NULL,'geometrie','ch.ehi.ili2db.geomType','POINT');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_ortsname',NULL,'geometrie','ch.ehi.ili2db.geomType','POLYGON');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_ortsname',NULL,'geometrie','ch.ehi.ili2db.c1Min','2460000.000');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_ortsname',NULL,'geometrie','ch.ehi.ili2db.c2Min','1045000.000');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('mopublic_ortsname',NULL,'geometrie','ch.ehi.ili2db.srid','2056');
@@ -1457,8 +1457,8 @@ INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) 
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_ortsname','ch.ehi.ili2db.tableKind','CLASS');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_bodenbedeckungproj','ch.ehi.ili2db.tableKind','CLASS');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_gebaeudeadresse','ch.ehi.ili2db.tableKind','CLASS');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_gebaeudeadressepos','ch.ehi.ili2db.tableKind','CLASS');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_objektnamepos','ch.ehi.ili2db.tableKind','CLASS');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_gebaeudeadressepos','ch.ehi.ili2db.tableKind','CLASS');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_hoheitsgrenzpunktpos','ch.ehi.ili2db.tableKind','CLASS');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_flurnamepos','ch.ehi.ili2db.tableKind','CLASS');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_einzelobjektflaeche','ch.ehi.ili2db.tableKind','CLASS');
@@ -1466,399 +1466,6 @@ INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) 
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_gelaendename','ch.ehi.ili2db.tableKind','CLASS');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_grundstueck','ch.ehi.ili2db.tableKind','CLASS');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('mopublic_objektnamepos_herkunft','ch.ehi.ili2db.tableKind','ENUM');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CHBase_Part1_GEOMETRY_20110830.ili','2.3','GeometryCHLV03_V1{ CoordSys Units INTERLIS} GeometryCHLV95_V1{ CoordSys Units INTERLIS}','/* ########################################################################
-   CHBASE - BASE MODULES OF THE SWISS FEDERATION FOR MINIMAL GEODATA MODELS
-   ======
-   BASISMODULE DES BUNDES           MODULES DE BASE DE LA CONFEDERATION
-   FÜR MINIMALE GEODATENMODELLE     POUR LES MODELES DE GEODONNEES MINIMAUX
-   
-   PROVIDER: GKG/KOGIS - GCS/COSIG             CONTACT: models@geo.admin.ch
-   PUBLISHED: 2011-0830
-   ########################################################################
-*/
-
-INTERLIS 2.3;
-
-/* ########################################################################
-   ########################################################################
-   PART I -- GEOMETRY
-   - Package GeometryCHLV03
-   - Package GeometryCHLV95
-*/
-
-!! ########################################################################
-
-!! Version    | Who   | Modification
-!!------------------------------------------------------------------------------
-!! 2015-02-20 | KOGIS | WITHOUT OVERLAPS added (line 57, 58, 65 and 66)
-!! 2015-11-12 | KOGIS | WITHOUT OVERLAPS corrected (line 57 and 58)
-!! 2017-11-27 | KOGIS | Meta-Attributes @furtherInformation adapted and @CRS added (line 31, 44 and 50)
-!! 2017-12-04 | KOGIS | Meta-Attribute @CRS corrected
-
-!!@technicalContact=models@geo.admin.ch
-!!@furtherInformation=https://www.geo.admin.ch/de/geoinformation-schweiz/geobasisdaten/geodata-models.html
-TYPE MODEL GeometryCHLV03_V1 (en)
-  AT "http://www.geo.admin.ch" VERSION "2017-12-04" =
-
-  IMPORTS UNQUALIFIED INTERLIS;
-  IMPORTS Units;
-  IMPORTS CoordSys;
-
-  REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
-    OBJECTS OF GeoCartesian2D: CHLV03
-    OBJECTS OF GeoHeight: SwissOrthometricAlt;
-
-  DOMAIN
-    !!@CRS=EPSG:21781
-    Coord2 = COORD
-      460000.000 .. 870000.000 [m] {CHLV03[1]},
-       45000.000 .. 310000.000 [m] {CHLV03[2]},
-      ROTATION 2 -> 1;
-
-    !!@CRS=EPSG:21781
-    Coord3 = COORD
-      460000.000 .. 870000.000 [m] {CHLV03[1]},
-       45000.000 .. 310000.000 [m] {CHLV03[2]},
-        -200.000 ..   5000.000 [m] {SwissOrthometricAlt[1]},
-      ROTATION 2 -> 1;
-
-    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.001;
-    Area = AREA WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.001;
-    Line = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord2;
-    DirectedLine EXTENDS Line = DIRECTED POLYLINE;
-    LineWithAltitude = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord3;
-    DirectedLineWithAltitude = DIRECTED POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord3;
-    
-    /* minimal overlaps only (2mm) */
-    SurfaceWithOverlaps2mm = SURFACE WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.002;
-    AreaWithOverlaps2mm = AREA WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.002;
-
-    Orientation = 0.00000 .. 359.99999 CIRCULAR [Units.Angle_Degree] <Coord2>;
-
-    Accuracy = (cm, cm50, m, m10, m50, vague);
-    Method = (measured, sketched, calculated);
-
-    STRUCTURE LineStructure = 
-      Line: Line;
-    END LineStructure;
-
-    STRUCTURE DirectedLineStructure =
-      Line: DirectedLine;
-    END DirectedLineStructure;
-
-    STRUCTURE MultiLine =
-      Lines: BAG {1..*} OF LineStructure;
-    END MultiLine;
-
-    STRUCTURE MultiDirectedLine =
-      Lines: BAG {1..*} OF DirectedLineStructure;
-    END MultiDirectedLine;
-
-    STRUCTURE SurfaceStructure =
-      Surface: Surface;
-    END SurfaceStructure;
-
-    STRUCTURE MultiSurface =
-      Surfaces: BAG {1..*} OF SurfaceStructure;
-    END MultiSurface;
-
-END GeometryCHLV03_V1.
-
-!! ########################################################################
-
-!! Version    | Who   | Modification
-!!------------------------------------------------------------------------------
-!! 2015-02-20 | KOGIS | WITHOUT OVERLAPS added (line 135, 136, 143 and 144)
-!! 2015-11-12 | KOGIS | WITHOUT OVERLAPS corrected (line 135 and 136)
-!! 2017-11-27 | KOGIS | Meta-Attributes @furtherInformation adapted and @CRS added (line 109, 122 and 128)
-!! 2017-12-04 | KOGIS | Meta-Attribute @CRS corrected
-
-!!@technicalContact=models@geo.admin.ch
-!!@furtherInformation=https://www.geo.admin.ch/de/geoinformation-schweiz/geobasisdaten/geodata-models.html
-TYPE MODEL GeometryCHLV95_V1 (en)
-  AT "http://www.geo.admin.ch" VERSION "2017-12-04" =
-
-  IMPORTS UNQUALIFIED INTERLIS;
-  IMPORTS Units;
-  IMPORTS CoordSys;
-
-  REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
-    OBJECTS OF GeoCartesian2D: CHLV95
-    OBJECTS OF GeoHeight: SwissOrthometricAlt;
-
-  DOMAIN
-    !!@CRS=EPSG:2056
-    Coord2 = COORD
-      2460000.000 .. 2870000.000 [m] {CHLV95[1]},
-      1045000.000 .. 1310000.000 [m] {CHLV95[2]},
-      ROTATION 2 -> 1;
-
-    !!@CRS=EPSG:2056
-    Coord3 = COORD
-      2460000.000 .. 2870000.000 [m] {CHLV95[1]},
-      1045000.000 .. 1310000.000 [m] {CHLV95[2]},
-         -200.000 ..   5000.000 [m] {SwissOrthometricAlt[1]},
-      ROTATION 2 -> 1;
-
-    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.001;
-    Area = AREA WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.001;
-    Line = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord2;
-    DirectedLine EXTENDS Line = DIRECTED POLYLINE;
-    LineWithAltitude = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord3;
-    DirectedLineWithAltitude = DIRECTED POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord3;
-    
-    /* minimal overlaps only (2mm) */
-    SurfaceWithOverlaps2mm = SURFACE WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.002;
-    AreaWithOverlaps2mm = AREA WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.002;
-
-    Orientation = 0.00000 .. 359.99999 CIRCULAR [Units.Angle_Degree] <Coord2>;
-
-    Accuracy = (cm, cm50, m, m10, m50, vague);
-    Method = (measured, sketched, calculated);
-
-    STRUCTURE LineStructure = 
-      Line: Line;
-    END LineStructure;
-
-    STRUCTURE DirectedLineStructure =
-      Line: DirectedLine;
-    END DirectedLineStructure;
-
-    STRUCTURE MultiLine =
-      Lines: BAG {1..*} OF LineStructure;
-    END MultiLine;
-
-    STRUCTURE MultiDirectedLine =
-      Lines: BAG {1..*} OF DirectedLineStructure;
-    END MultiDirectedLine;
-
-    STRUCTURE SurfaceStructure =
-      Surface: Surface;
-    END SurfaceStructure;
-
-    STRUCTURE MultiSurface =
-      Surfaces: BAG {1..*} OF SurfaceStructure;
-    END MultiSurface;
-
-END GeometryCHLV95_V1.
-
-!! ########################################################################
-','2020-10-09 18:44:37.531');
-INSERT INTO agi_mopublic_pub_export.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CoordSys-20151124.ili','2.3','CoordSys','!! File CoordSys.ili Release 2015-11-24
-
-INTERLIS 2.3;
-
-!! 2015-11-24 Cardinalities adapted (line 122, 123, 124, 132, 133, 134, 142, 143,
-!!                                   148, 149, 163, 164, 168, 169, 206 and 207)
-!!@precursorVersion = 2005-06-16
-
-REFSYSTEM MODEL CoordSys (en) AT "http://www.interlis.ch/models"
-  VERSION "2015-11-24" =
-
-  UNIT
-    Angle_Degree = 180 / PI [INTERLIS.rad];
-    Angle_Minute = 1 / 60 [Angle_Degree];
-    Angle_Second = 1 / 60 [Angle_Minute];
-
-  STRUCTURE Angle_DMS_S =
-    Degrees: -180 .. 180 CIRCULAR [Angle_Degree];
-    CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [Angle_Minute];
-    CONTINUOUS SUBDIVISION Seconds: 0.000 .. 59.999 CIRCULAR [Angle_Second];
-  END Angle_DMS_S;
-
-  DOMAIN
-    Angle_DMS = FORMAT BASED ON Angle_DMS_S (Degrees ":" Minutes ":" Seconds);
-    Angle_DMS_90 EXTENDS Angle_DMS = "-90:00:00.000" .. "90:00:00.000";
-
-
-  TOPIC CoordsysTopic =
-
-    !! Special space aspects to be referenced
-    !! **************************************
-
-    CLASS Ellipsoid EXTENDS INTERLIS.REFSYSTEM =
-      EllipsoidAlias: TEXT*70;
-      SemiMajorAxis: MANDATORY 6360000.0000 .. 6390000.0000 [INTERLIS.m];
-      InverseFlattening: MANDATORY 0.00000000 .. 350.00000000;
-      !! The inverse flattening 0 characterizes the 2-dim sphere
-      Remarks: TEXT*70;
-    END Ellipsoid;
-
-    CLASS GravityModel EXTENDS INTERLIS.REFSYSTEM =
-      GravityModAlias: TEXT*70;
-      Definition: TEXT*70;
-    END GravityModel;
-
-    CLASS GeoidModel EXTENDS INTERLIS.REFSYSTEM =
-      GeoidModAlias: TEXT*70;
-      Definition: TEXT*70;
-    END GeoidModel;
-
-
-    !! Coordinate systems for geodetic purposes
-    !! ****************************************
-
-    STRUCTURE LengthAXIS EXTENDS INTERLIS.AXIS =
-      ShortName: TEXT*12;
-      Description: TEXT*255;
-    PARAMETER
-      Unit (EXTENDED): NUMERIC [INTERLIS.LENGTH];
-    END LengthAXIS;
-
-    STRUCTURE AngleAXIS EXTENDS INTERLIS.AXIS =
-      ShortName: TEXT*12;
-      Description: TEXT*255;
-    PARAMETER
-      Unit (EXTENDED): NUMERIC [INTERLIS.ANGLE];
-    END AngleAXIS;
-
-    CLASS GeoCartesian1D EXTENDS INTERLIS.COORDSYSTEM =
-      Axis (EXTENDED): LIST {1} OF LengthAXIS;
-    END GeoCartesian1D;
-
-    CLASS GeoHeight EXTENDS GeoCartesian1D =
-      System: MANDATORY (
-        normal,
-        orthometric,
-        ellipsoidal,
-        other);
-      ReferenceHeight: MANDATORY -10000.000 .. +10000.000 [INTERLIS.m];
-      ReferenceHeightDescr: TEXT*70;
-    END GeoHeight;
-
-    ASSOCIATION HeightEllips =
-      GeoHeightRef -- {*} GeoHeight;
-      EllipsoidRef -- {1} Ellipsoid;
-    END HeightEllips;
-
-    ASSOCIATION HeightGravit =
-      GeoHeightRef -- {*} GeoHeight;
-      GravityRef -- {1} GravityModel;
-    END HeightGravit;
-
-    ASSOCIATION HeightGeoid =
-      GeoHeightRef -- {*} GeoHeight;
-      GeoidRef -- {1} GeoidModel;
-    END HeightGeoid;
-
-    CLASS GeoCartesian2D EXTENDS INTERLIS.COORDSYSTEM =
-      Definition: TEXT*70;
-      Axis (EXTENDED): LIST {2} OF LengthAXIS;
-    END GeoCartesian2D;
-
-    CLASS GeoCartesian3D EXTENDS INTERLIS.COORDSYSTEM =
-      Definition: TEXT*70;
-      Axis (EXTENDED): LIST {3} OF LengthAXIS;
-    END GeoCartesian3D;
-
-    CLASS GeoEllipsoidal EXTENDS INTERLIS.COORDSYSTEM =
-      Definition: TEXT*70;
-      Axis (EXTENDED): LIST {2} OF AngleAXIS;
-    END GeoEllipsoidal;
-
-    ASSOCIATION EllCSEllips =
-      GeoEllipsoidalRef -- {*} GeoEllipsoidal;
-      EllipsoidRef -- {1} Ellipsoid;
-    END EllCSEllips;
-
-
-    !! Mappings between coordinate systems
-    !! ***********************************
-
-    ASSOCIATION ToGeoEllipsoidal =
-      From -- {0..*} GeoCartesian3D;
-      To -- {0..*} GeoEllipsoidal;
-      ToHeight -- {0..*} GeoHeight;
-    MANDATORY CONSTRAINT
-      ToHeight -> System == #ellipsoidal;
-    MANDATORY CONSTRAINT
-      To -> EllipsoidRef -> Name == ToHeight -> EllipsoidRef -> Name;
-    END ToGeoEllipsoidal;
-
-    ASSOCIATION ToGeoCartesian3D =
-      From2 -- {0..*} GeoEllipsoidal;
-      FromHeight-- {0..*} GeoHeight;
-      To3 -- {0..*} GeoCartesian3D;
-    MANDATORY CONSTRAINT
-      FromHeight -> System == #ellipsoidal;
-    MANDATORY CONSTRAINT
-      From2 -> EllipsoidRef -> Name == FromHeight -> EllipsoidRef -> Name;
-    END ToGeoCartesian3D;
-
-    ASSOCIATION BidirectGeoCartesian2D =
-      From -- {0..*} GeoCartesian2D;
-      To -- {0..*} GeoCartesian2D;
-    END BidirectGeoCartesian2D;
-
-    ASSOCIATION BidirectGeoCartesian3D =
-      From -- {0..*} GeoCartesian3D;
-      To2 -- {0..*} GeoCartesian3D;
-      Precision: MANDATORY (
-        exact,
-        measure_based);
-      ShiftAxis1: MANDATORY -10000.000 .. 10000.000 [INTERLIS.m];
-      ShiftAxis2: MANDATORY -10000.000 .. 10000.000 [INTERLIS.m];
-      ShiftAxis3: MANDATORY -10000.000 .. 10000.000 [INTERLIS.m];
-      RotationAxis1: Angle_DMS_90;
-      RotationAxis2: Angle_DMS_90;
-      RotationAxis3: Angle_DMS_90;
-      NewScale: 0.000001 .. 1000000.000000;
-    END BidirectGeoCartesian3D;
-
-    ASSOCIATION BidirectGeoEllipsoidal =
-      From4 -- {0..*} GeoEllipsoidal;
-      To4 -- {0..*} GeoEllipsoidal;
-    END BidirectGeoEllipsoidal;
-
-    ASSOCIATION MapProjection (ABSTRACT) =
-      From5 -- {0..*} GeoEllipsoidal;
-      To5 -- {0..*} GeoCartesian2D;
-      FromCo1_FundPt: MANDATORY Angle_DMS_90;
-      FromCo2_FundPt: MANDATORY Angle_DMS_90;
-      ToCoord1_FundPt: MANDATORY -10000000 .. +10000000 [INTERLIS.m];
-      ToCoord2_FundPt: MANDATORY -10000000 .. +10000000 [INTERLIS.m];
-    END MapProjection;
-
-    ASSOCIATION TransverseMercator EXTENDS MapProjection =
-    END TransverseMercator;
-
-    ASSOCIATION SwissProjection EXTENDS MapProjection =
-      IntermFundP1: MANDATORY Angle_DMS_90;
-      IntermFundP2: MANDATORY Angle_DMS_90;
-    END SwissProjection;
-
-    ASSOCIATION Mercator EXTENDS MapProjection =
-    END Mercator;
-
-    ASSOCIATION ObliqueMercator EXTENDS MapProjection =
-    END ObliqueMercator;
-
-    ASSOCIATION Lambert EXTENDS MapProjection =
-    END Lambert;
-
-    ASSOCIATION Polyconic EXTENDS MapProjection =
-    END Polyconic;
-
-    ASSOCIATION Albus EXTENDS MapProjection =
-    END Albus;
-
-    ASSOCIATION Azimutal EXTENDS MapProjection =
-    END Azimutal;
-
-    ASSOCIATION Stereographic EXTENDS MapProjection =
-    END Stereographic;
-
-    ASSOCIATION HeightConversion =
-      FromHeight -- {0..*} GeoHeight;
-      ToHeight -- {0..*} GeoHeight;
-      Definition: TEXT*70;
-    END HeightConversion;
-
-  END CoordsysTopic;
-
-END CoordSys.
-
-','2020-10-09 18:44:37.531');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CHBase_Part4_ADMINISTRATIVEUNITS_20110830.ili','2.3','CHAdminCodes_V1 AdministrativeUnits_V1{ CHAdminCodes_V1 InternationalCodes_V1 Dictionaries_V1 Localisation_V1 INTERLIS} AdministrativeUnitsCH_V1{ CHAdminCodes_V1 InternationalCodes_V1 LocalisationCH_V1 AdministrativeUnits_V1 INTERLIS}','/* ########################################################################
    CHBASE - BASE MODULES OF THE SWISS FEDERATION FOR MINIMAL GEODATA MODELS
    ======
@@ -2080,7 +1687,7 @@ MODEL AdministrativeUnitsCH_V1 (en)
 END AdministrativeUnitsCH_V1.
 
 !! ########################################################################
-','2020-10-09 18:44:37.531');
+','2020-10-10 14:55:25.073');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('Units-20120220.ili','2.3','Units','!! File Units.ili Release 2012-02-20
 
 INTERLIS 2.3;
@@ -2178,7 +1785,222 @@ CONTRACTED TYPE MODEL Units (en) AT "http://www.interlis.ch/models"
 
 END Units.
 
-','2020-10-09 18:44:37.531');
+','2020-10-10 14:55:25.073');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CoordSys-20151124.ili','2.3','CoordSys','!! File CoordSys.ili Release 2015-11-24
+
+INTERLIS 2.3;
+
+!! 2015-11-24 Cardinalities adapted (line 122, 123, 124, 132, 133, 134, 142, 143,
+!!                                   148, 149, 163, 164, 168, 169, 206 and 207)
+!!@precursorVersion = 2005-06-16
+
+REFSYSTEM MODEL CoordSys (en) AT "http://www.interlis.ch/models"
+  VERSION "2015-11-24" =
+
+  UNIT
+    Angle_Degree = 180 / PI [INTERLIS.rad];
+    Angle_Minute = 1 / 60 [Angle_Degree];
+    Angle_Second = 1 / 60 [Angle_Minute];
+
+  STRUCTURE Angle_DMS_S =
+    Degrees: -180 .. 180 CIRCULAR [Angle_Degree];
+    CONTINUOUS SUBDIVISION Minutes: 0 .. 59 CIRCULAR [Angle_Minute];
+    CONTINUOUS SUBDIVISION Seconds: 0.000 .. 59.999 CIRCULAR [Angle_Second];
+  END Angle_DMS_S;
+
+  DOMAIN
+    Angle_DMS = FORMAT BASED ON Angle_DMS_S (Degrees ":" Minutes ":" Seconds);
+    Angle_DMS_90 EXTENDS Angle_DMS = "-90:00:00.000" .. "90:00:00.000";
+
+
+  TOPIC CoordsysTopic =
+
+    !! Special space aspects to be referenced
+    !! **************************************
+
+    CLASS Ellipsoid EXTENDS INTERLIS.REFSYSTEM =
+      EllipsoidAlias: TEXT*70;
+      SemiMajorAxis: MANDATORY 6360000.0000 .. 6390000.0000 [INTERLIS.m];
+      InverseFlattening: MANDATORY 0.00000000 .. 350.00000000;
+      !! The inverse flattening 0 characterizes the 2-dim sphere
+      Remarks: TEXT*70;
+    END Ellipsoid;
+
+    CLASS GravityModel EXTENDS INTERLIS.REFSYSTEM =
+      GravityModAlias: TEXT*70;
+      Definition: TEXT*70;
+    END GravityModel;
+
+    CLASS GeoidModel EXTENDS INTERLIS.REFSYSTEM =
+      GeoidModAlias: TEXT*70;
+      Definition: TEXT*70;
+    END GeoidModel;
+
+
+    !! Coordinate systems for geodetic purposes
+    !! ****************************************
+
+    STRUCTURE LengthAXIS EXTENDS INTERLIS.AXIS =
+      ShortName: TEXT*12;
+      Description: TEXT*255;
+    PARAMETER
+      Unit (EXTENDED): NUMERIC [INTERLIS.LENGTH];
+    END LengthAXIS;
+
+    STRUCTURE AngleAXIS EXTENDS INTERLIS.AXIS =
+      ShortName: TEXT*12;
+      Description: TEXT*255;
+    PARAMETER
+      Unit (EXTENDED): NUMERIC [INTERLIS.ANGLE];
+    END AngleAXIS;
+
+    CLASS GeoCartesian1D EXTENDS INTERLIS.COORDSYSTEM =
+      Axis (EXTENDED): LIST {1} OF LengthAXIS;
+    END GeoCartesian1D;
+
+    CLASS GeoHeight EXTENDS GeoCartesian1D =
+      System: MANDATORY (
+        normal,
+        orthometric,
+        ellipsoidal,
+        other);
+      ReferenceHeight: MANDATORY -10000.000 .. +10000.000 [INTERLIS.m];
+      ReferenceHeightDescr: TEXT*70;
+    END GeoHeight;
+
+    ASSOCIATION HeightEllips =
+      GeoHeightRef -- {*} GeoHeight;
+      EllipsoidRef -- {1} Ellipsoid;
+    END HeightEllips;
+
+    ASSOCIATION HeightGravit =
+      GeoHeightRef -- {*} GeoHeight;
+      GravityRef -- {1} GravityModel;
+    END HeightGravit;
+
+    ASSOCIATION HeightGeoid =
+      GeoHeightRef -- {*} GeoHeight;
+      GeoidRef -- {1} GeoidModel;
+    END HeightGeoid;
+
+    CLASS GeoCartesian2D EXTENDS INTERLIS.COORDSYSTEM =
+      Definition: TEXT*70;
+      Axis (EXTENDED): LIST {2} OF LengthAXIS;
+    END GeoCartesian2D;
+
+    CLASS GeoCartesian3D EXTENDS INTERLIS.COORDSYSTEM =
+      Definition: TEXT*70;
+      Axis (EXTENDED): LIST {3} OF LengthAXIS;
+    END GeoCartesian3D;
+
+    CLASS GeoEllipsoidal EXTENDS INTERLIS.COORDSYSTEM =
+      Definition: TEXT*70;
+      Axis (EXTENDED): LIST {2} OF AngleAXIS;
+    END GeoEllipsoidal;
+
+    ASSOCIATION EllCSEllips =
+      GeoEllipsoidalRef -- {*} GeoEllipsoidal;
+      EllipsoidRef -- {1} Ellipsoid;
+    END EllCSEllips;
+
+
+    !! Mappings between coordinate systems
+    !! ***********************************
+
+    ASSOCIATION ToGeoEllipsoidal =
+      From -- {0..*} GeoCartesian3D;
+      To -- {0..*} GeoEllipsoidal;
+      ToHeight -- {0..*} GeoHeight;
+    MANDATORY CONSTRAINT
+      ToHeight -> System == #ellipsoidal;
+    MANDATORY CONSTRAINT
+      To -> EllipsoidRef -> Name == ToHeight -> EllipsoidRef -> Name;
+    END ToGeoEllipsoidal;
+
+    ASSOCIATION ToGeoCartesian3D =
+      From2 -- {0..*} GeoEllipsoidal;
+      FromHeight-- {0..*} GeoHeight;
+      To3 -- {0..*} GeoCartesian3D;
+    MANDATORY CONSTRAINT
+      FromHeight -> System == #ellipsoidal;
+    MANDATORY CONSTRAINT
+      From2 -> EllipsoidRef -> Name == FromHeight -> EllipsoidRef -> Name;
+    END ToGeoCartesian3D;
+
+    ASSOCIATION BidirectGeoCartesian2D =
+      From -- {0..*} GeoCartesian2D;
+      To -- {0..*} GeoCartesian2D;
+    END BidirectGeoCartesian2D;
+
+    ASSOCIATION BidirectGeoCartesian3D =
+      From -- {0..*} GeoCartesian3D;
+      To2 -- {0..*} GeoCartesian3D;
+      Precision: MANDATORY (
+        exact,
+        measure_based);
+      ShiftAxis1: MANDATORY -10000.000 .. 10000.000 [INTERLIS.m];
+      ShiftAxis2: MANDATORY -10000.000 .. 10000.000 [INTERLIS.m];
+      ShiftAxis3: MANDATORY -10000.000 .. 10000.000 [INTERLIS.m];
+      RotationAxis1: Angle_DMS_90;
+      RotationAxis2: Angle_DMS_90;
+      RotationAxis3: Angle_DMS_90;
+      NewScale: 0.000001 .. 1000000.000000;
+    END BidirectGeoCartesian3D;
+
+    ASSOCIATION BidirectGeoEllipsoidal =
+      From4 -- {0..*} GeoEllipsoidal;
+      To4 -- {0..*} GeoEllipsoidal;
+    END BidirectGeoEllipsoidal;
+
+    ASSOCIATION MapProjection (ABSTRACT) =
+      From5 -- {0..*} GeoEllipsoidal;
+      To5 -- {0..*} GeoCartesian2D;
+      FromCo1_FundPt: MANDATORY Angle_DMS_90;
+      FromCo2_FundPt: MANDATORY Angle_DMS_90;
+      ToCoord1_FundPt: MANDATORY -10000000 .. +10000000 [INTERLIS.m];
+      ToCoord2_FundPt: MANDATORY -10000000 .. +10000000 [INTERLIS.m];
+    END MapProjection;
+
+    ASSOCIATION TransverseMercator EXTENDS MapProjection =
+    END TransverseMercator;
+
+    ASSOCIATION SwissProjection EXTENDS MapProjection =
+      IntermFundP1: MANDATORY Angle_DMS_90;
+      IntermFundP2: MANDATORY Angle_DMS_90;
+    END SwissProjection;
+
+    ASSOCIATION Mercator EXTENDS MapProjection =
+    END Mercator;
+
+    ASSOCIATION ObliqueMercator EXTENDS MapProjection =
+    END ObliqueMercator;
+
+    ASSOCIATION Lambert EXTENDS MapProjection =
+    END Lambert;
+
+    ASSOCIATION Polyconic EXTENDS MapProjection =
+    END Polyconic;
+
+    ASSOCIATION Albus EXTENDS MapProjection =
+    END Albus;
+
+    ASSOCIATION Azimutal EXTENDS MapProjection =
+    END Azimutal;
+
+    ASSOCIATION Stereographic EXTENDS MapProjection =
+    END Stereographic;
+
+    ASSOCIATION HeightConversion =
+      FromHeight -- {0..*} GeoHeight;
+      ToHeight -- {0..*} GeoHeight;
+      Definition: TEXT*70;
+    END HeightConversion;
+
+  END CoordsysTopic;
+
+END CoordSys.
+
+','2020-10-10 14:55:25.073');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CHBase_Part2_LOCALISATION_20110830.ili','2.3','InternationalCodes_V1 Localisation_V1{ InternationalCodes_V1} LocalisationCH_V1{ InternationalCodes_V1 Localisation_V1} Dictionaries_V1{ InternationalCodes_V1} DictionariesCH_V1{ InternationalCodes_V1 Dictionaries_V1}','/* ########################################################################
    CHBASE - BASE MODULES OF THE SWISS FEDERATION FOR MINIMAL GEODATA MODELS
    ======
@@ -2350,7 +2172,7 @@ MODEL DictionariesCH_V1 (en)
 END DictionariesCH_V1.
 
 !! ########################################################################
-','2020-10-09 18:44:37.531');
+','2020-10-10 14:55:25.073');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('SO_AGI_MOpublic_20201009.ili','2.3','SO_AGI_MOpublic_20201009{ GeometryCHLV95_V1 CHAdminCodes_V1 Units}','INTERLIS 2.3;
 
 /** !!------------------------------------------------------------------------------ 
@@ -2977,7 +2799,7 @@ VERSION "2020-10-09"  =
     EXTENDS OrtsnameBase =
       /** Geometrie
        */
-      Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+      Geometrie : MANDATORY GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
     END Ortsname;
 
     CLASS OrtsnamePos
@@ -3072,7 +2894,185 @@ VERSION "2020-10-09"  =
   END MOpublic;
 
 END SO_AGI_MOpublic_20201009.
-','2020-10-09 18:44:37.531');
+','2020-10-10 14:55:25.073');
+INSERT INTO agi_mopublic_pub_export.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CHBase_Part1_GEOMETRY_20110830.ili','2.3','GeometryCHLV03_V1{ CoordSys Units INTERLIS} GeometryCHLV95_V1{ CoordSys Units INTERLIS}','/* ########################################################################
+   CHBASE - BASE MODULES OF THE SWISS FEDERATION FOR MINIMAL GEODATA MODELS
+   ======
+   BASISMODULE DES BUNDES           MODULES DE BASE DE LA CONFEDERATION
+   FÜR MINIMALE GEODATENMODELLE     POUR LES MODELES DE GEODONNEES MINIMAUX
+   
+   PROVIDER: GKG/KOGIS - GCS/COSIG             CONTACT: models@geo.admin.ch
+   PUBLISHED: 2011-0830
+   ########################################################################
+*/
+
+INTERLIS 2.3;
+
+/* ########################################################################
+   ########################################################################
+   PART I -- GEOMETRY
+   - Package GeometryCHLV03
+   - Package GeometryCHLV95
+*/
+
+!! ########################################################################
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2015-02-20 | KOGIS | WITHOUT OVERLAPS added (line 57, 58, 65 and 66)
+!! 2015-11-12 | KOGIS | WITHOUT OVERLAPS corrected (line 57 and 58)
+!! 2017-11-27 | KOGIS | Meta-Attributes @furtherInformation adapted and @CRS added (line 31, 44 and 50)
+!! 2017-12-04 | KOGIS | Meta-Attribute @CRS corrected
+
+!!@technicalContact=models@geo.admin.ch
+!!@furtherInformation=https://www.geo.admin.ch/de/geoinformation-schweiz/geobasisdaten/geodata-models.html
+TYPE MODEL GeometryCHLV03_V1 (en)
+  AT "http://www.geo.admin.ch" VERSION "2017-12-04" =
+
+  IMPORTS UNQUALIFIED INTERLIS;
+  IMPORTS Units;
+  IMPORTS CoordSys;
+
+  REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
+    OBJECTS OF GeoCartesian2D: CHLV03
+    OBJECTS OF GeoHeight: SwissOrthometricAlt;
+
+  DOMAIN
+    !!@CRS=EPSG:21781
+    Coord2 = COORD
+      460000.000 .. 870000.000 [m] {CHLV03[1]},
+       45000.000 .. 310000.000 [m] {CHLV03[2]},
+      ROTATION 2 -> 1;
+
+    !!@CRS=EPSG:21781
+    Coord3 = COORD
+      460000.000 .. 870000.000 [m] {CHLV03[1]},
+       45000.000 .. 310000.000 [m] {CHLV03[2]},
+        -200.000 ..   5000.000 [m] {SwissOrthometricAlt[1]},
+      ROTATION 2 -> 1;
+
+    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.001;
+    Area = AREA WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.001;
+    Line = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord2;
+    DirectedLine EXTENDS Line = DIRECTED POLYLINE;
+    LineWithAltitude = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord3;
+    DirectedLineWithAltitude = DIRECTED POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord3;
+    
+    /* minimal overlaps only (2mm) */
+    SurfaceWithOverlaps2mm = SURFACE WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.002;
+    AreaWithOverlaps2mm = AREA WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.002;
+
+    Orientation = 0.00000 .. 359.99999 CIRCULAR [Units.Angle_Degree] <Coord2>;
+
+    Accuracy = (cm, cm50, m, m10, m50, vague);
+    Method = (measured, sketched, calculated);
+
+    STRUCTURE LineStructure = 
+      Line: Line;
+    END LineStructure;
+
+    STRUCTURE DirectedLineStructure =
+      Line: DirectedLine;
+    END DirectedLineStructure;
+
+    STRUCTURE MultiLine =
+      Lines: BAG {1..*} OF LineStructure;
+    END MultiLine;
+
+    STRUCTURE MultiDirectedLine =
+      Lines: BAG {1..*} OF DirectedLineStructure;
+    END MultiDirectedLine;
+
+    STRUCTURE SurfaceStructure =
+      Surface: Surface;
+    END SurfaceStructure;
+
+    STRUCTURE MultiSurface =
+      Surfaces: BAG {1..*} OF SurfaceStructure;
+    END MultiSurface;
+
+END GeometryCHLV03_V1.
+
+!! ########################################################################
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2015-02-20 | KOGIS | WITHOUT OVERLAPS added (line 135, 136, 143 and 144)
+!! 2015-11-12 | KOGIS | WITHOUT OVERLAPS corrected (line 135 and 136)
+!! 2017-11-27 | KOGIS | Meta-Attributes @furtherInformation adapted and @CRS added (line 109, 122 and 128)
+!! 2017-12-04 | KOGIS | Meta-Attribute @CRS corrected
+
+!!@technicalContact=models@geo.admin.ch
+!!@furtherInformation=https://www.geo.admin.ch/de/geoinformation-schweiz/geobasisdaten/geodata-models.html
+TYPE MODEL GeometryCHLV95_V1 (en)
+  AT "http://www.geo.admin.ch" VERSION "2017-12-04" =
+
+  IMPORTS UNQUALIFIED INTERLIS;
+  IMPORTS Units;
+  IMPORTS CoordSys;
+
+  REFSYSTEM BASKET BCoordSys ~ CoordSys.CoordsysTopic
+    OBJECTS OF GeoCartesian2D: CHLV95
+    OBJECTS OF GeoHeight: SwissOrthometricAlt;
+
+  DOMAIN
+    !!@CRS=EPSG:2056
+    Coord2 = COORD
+      2460000.000 .. 2870000.000 [m] {CHLV95[1]},
+      1045000.000 .. 1310000.000 [m] {CHLV95[2]},
+      ROTATION 2 -> 1;
+
+    !!@CRS=EPSG:2056
+    Coord3 = COORD
+      2460000.000 .. 2870000.000 [m] {CHLV95[1]},
+      1045000.000 .. 1310000.000 [m] {CHLV95[2]},
+         -200.000 ..   5000.000 [m] {SwissOrthometricAlt[1]},
+      ROTATION 2 -> 1;
+
+    Surface = SURFACE WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.001;
+    Area = AREA WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.001;
+    Line = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord2;
+    DirectedLine EXTENDS Line = DIRECTED POLYLINE;
+    LineWithAltitude = POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord3;
+    DirectedLineWithAltitude = DIRECTED POLYLINE WITH (STRAIGHTS, ARCS) VERTEX Coord3;
+    
+    /* minimal overlaps only (2mm) */
+    SurfaceWithOverlaps2mm = SURFACE WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.002;
+    AreaWithOverlaps2mm = AREA WITH (STRAIGHTS, ARCS) VERTEX Coord2 WITHOUT OVERLAPS > 0.002;
+
+    Orientation = 0.00000 .. 359.99999 CIRCULAR [Units.Angle_Degree] <Coord2>;
+
+    Accuracy = (cm, cm50, m, m10, m50, vague);
+    Method = (measured, sketched, calculated);
+
+    STRUCTURE LineStructure = 
+      Line: Line;
+    END LineStructure;
+
+    STRUCTURE DirectedLineStructure =
+      Line: DirectedLine;
+    END DirectedLineStructure;
+
+    STRUCTURE MultiLine =
+      Lines: BAG {1..*} OF LineStructure;
+    END MultiLine;
+
+    STRUCTURE MultiDirectedLine =
+      Lines: BAG {1..*} OF DirectedLineStructure;
+    END MultiDirectedLine;
+
+    STRUCTURE SurfaceStructure =
+      Surface: Surface;
+    END SurfaceStructure;
+
+    STRUCTURE MultiSurface =
+      Surfaces: BAG {1..*} OF SurfaceStructure;
+    END MultiSurface;
+
+END GeometryCHLV95_V1.
+
+!! ########################################################################
+','2020-10-10 14:55:25.073');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.createMetaInfo','True');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.beautifyEnumDispName','underscore');
 INSERT INTO agi_mopublic_pub_export.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.arrayTrafo','coalesce');
